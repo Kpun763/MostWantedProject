@@ -74,7 +74,7 @@ function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
         `Person: ${person.firstName} ${person.lastName}\n\nDo you want to know their full information, family, or descendants?`,
-        ['info', 'family', 'descendants', 'quit']
+        ['info', 'family', 'immediate family', 'descendants', 'quit']
     );
 
     switch (mainMenuUserActionChoice) {
@@ -116,7 +116,7 @@ function displayImmediateFamily(person, people) {
     const immediateFamily = [];
     const spouse = people.find(p => p.id === person.currentSpouse);
     if (spouse) {
-        immediateFamily.push({ name: `${spous.firstName} ${spouse.lastName}`, relation: 'Spouse'});
+        immediateFamily.push({ name: `${spouse.firstName} ${spouse.lastName}`, relation: 'Spouse'});
     }
     if (person.parents.length > 0) {
         person.parents.forEach(parentId => {
