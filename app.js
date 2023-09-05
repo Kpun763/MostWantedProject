@@ -74,7 +74,7 @@ function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
         `Person: ${person.firstName} ${person.lastName}\n\nDo you want to know their full information, family, or descendants?`,
-        ['info', 'family', 'immediate family', 'descendants', 'quit']
+        ['info', 'family', 'descendants', 'quit']
     );
 
     switch (mainMenuUserActionChoice) {
@@ -84,8 +84,8 @@ function mainMenu(person, people) {
             break;
         case "family":
             //! TODO
-            // let personFamily = findPersonFamily(person, people);
-            // displayPeople('Family', personFamily);
+            let personFamily = findPersonFamily(person, people);
+            displayPeople('Family', personFamily);
             break;
         case "immediate family":
             displayImmediateFamily(person, people);
@@ -111,12 +111,13 @@ function displayPersonInfo(person) {
     alert(`Person Information:\n\n${info}`)
 
 }
-function displayImmediateFamily(person, people) {
+function Family(person, people) {
     const { id, firstName, lastName} = person;
-    const immediateFamily = [];
+    const family = [];
+
     const spouse = people.find(p => p.id === person.currentSpouse);
     if (spouse) {
-        immediateFamily.push({ name: `${spouse.firstName} ${spouse.lastName}`, relation: 'Spouse'});
+        family.push({ name: `${spouse.firstName} ${spouse.lastName}`, relation: 'Spouse'});
     }
     if (person.parents.length > 0) {
         person.parents.forEach(parentId => {
@@ -131,13 +132,28 @@ function displayImmediateFamily(person, people) {
             immediateFamily.push({ name: `${sibling.firstName} ${sibling.lastName}`, relation: 'Sibling' });
         }
     });
-    if (immediateFamily.length > 0) {
-        const familyInfo = immediateFamily.map(member => `${member.relation}: ${member.name}`).join('\n');
-        alert(`Immediate Family of ${firstName} ${lastName}:\n\n${familyInfo}`);
+    if (family.length > 0) {
+        const familyInfo = family.map(member => `${member.relation}: ${member.name}`).join('\n');
+        alert(`Family of ${firstName} ${lastName}:\n\n${familyInfo}`);
     } else {
-        alert(`${firstName} ${lastName} has no immediate family members recorded.`);
+        alert(`${firstName} ${lastName} has no family members recorded.`);
     }
 }
+
+function findPersonDescendants(person, people) {
+    const {id} = person;
+    const descendants = [];
+function findDescendantsRecursive(currentPerson) {
+    const children = people.filter(child => child.parents.includes(currentPerson.id));
+    for (const child of children) {
+        descendants.push(child);
+        findDescendantsRecursive(child);
+    }
+}    
+findDescendantsRecursive(person);
+return descendants;
+}
+
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
     alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
