@@ -41,7 +41,7 @@ function searchPeopleDataSet(people) {
             break;
         case 'traits':
             //! TODO
-            // results = searchByTraits(people);
+            results = searchByTraits(people);
             break;
         default:
             return searchPeopleDataSet(people);
@@ -64,6 +64,12 @@ function searchByName(people) {
     return fullNameSearchResults;
 }
 
+function searchByTraits(people) {
+    const traitToSearchFor = prompt('Please enter the trait you want to search for.').toLowerCase();
+    const traitFilterResults = people.filter(person => personTraitsMatch(person, traitToSearchFor));
+    return traitFilterResults;
+    };
+    
 function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
