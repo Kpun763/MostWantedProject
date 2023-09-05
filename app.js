@@ -87,6 +87,9 @@ function mainMenu(person, people) {
             // let personFamily = findPersonFamily(person, people);
             // displayPeople('Family', personFamily);
             break;
+        case "immediate family":
+            displayImmediateFamily(person, people);
+            break;
         case "descendants":
             //! TODO
             // let personDescendants = findPersonDescendants(person, people);
@@ -108,7 +111,33 @@ function displayPersonInfo(person) {
     alert(`Person Information:\n\n${info}`)
 
 }
-
+function displayImmediateFamily(person, people) {
+    const { id, firstName, lastName} = person;
+    const immediateFamily = [];
+    const spouse = people.find(p => p.id === person.currentSpouse);
+    if (spouse) {
+        immediateFamily.push({ name: `${spous.firstName} ${spouse.lastName}`, relation: 'Spouse'});
+    }
+    if (person.parents.length > 0) {
+        person.parents.forEach(parentId => {
+            const parent = people.find(p => p.id === parentId);
+            if (parent) {
+                immediateFamily.push({ name: `${parent.firstName} ${parent.lastName}`, relation: 'Parent' });
+            }
+        });
+    }
+    people.forEach(sibling => {
+        if (sibling.id !== id && sibling.parents.some(parentId => person.parents.includes(parentId))) {
+            immediateFamily.push({ name: `${sibling.firstName} ${sibling.lastName}`, relation: 'Sibling' });
+        }
+    });
+    if (immediateFamily.length > 0) {
+        const familyInfo = immediateFamily.map(member => `${member.relation}: ${member.name}`).join('\n');
+        alert(`Immediate Family of ${firstName} ${lastName}:\n\n${familyInfo}`);
+    } else {
+        alert(`${firstName} ${lastName} has no immediate family members recorded.`);
+    }
+}
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
     alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
