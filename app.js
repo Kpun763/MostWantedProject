@@ -101,6 +101,14 @@ function mainMenu(person, people) {
     return mainMenu(person, people);
 }
 
+function displayPersonInfo(person) {
+    const {firstName, lastName, id, gender, dob, height, weight, eyeColor, occupation, parents, currentSpouse} = person; 
+    const info = `Full Name: ${firstName} ${lastName}, ID: ${id},Gender: ${gender},Date of Birth: ${dob},Height: ${height} inches,Weight: ${weight} pounds,Eye Color: ${eyeColor},Occupation: ${occupation},Parents: ${parents.length > 0 ? parents.join(', '): 'N/A'}, Current Spouse: ${currentSpouse ? currentSpouse : 'N/A'}
+    `;
+    alert(`Person Information:\n\n${info}`)
+
+}
+
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
     alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
