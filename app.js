@@ -43,6 +43,9 @@ function searchPeopleDataSet(people) {
             //! TODO
             results = searchByTraits(people);
             break;
+        case 'multiple traits':
+            results = searchByMultipleTraits(people);
+            break;
         default:
             return searchPeopleDataSet(people);
     }
@@ -69,7 +72,7 @@ function searchByTraits(people) {
     const traitFilterResults = people.filter(person => personTraitsMatch(person, traitToSearchFor));
     return traitFilterResults;
     };
-    
+   
 function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
