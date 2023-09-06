@@ -90,7 +90,7 @@ function mainMenu(person, people) {
         case "descendants":
             //! TODO
             let personDescendants = findPersonDescendants(person, people);
-            displayPeople('Descendants', personDescendants);
+            displayDescendants('Descendants', personDescendants);
             break;
         case "quit":
             return;
@@ -116,7 +116,7 @@ function findPersonFamily(person, people) {
     if (spouse) {
         family.push({ name: `${spouse.firstName} ${spouse.lastName}`, relation: 'Spouse' });
     }
-    
+
     if (person.parents.length > 0) {
         person.parents.forEach(parentId => {
             const parent = people.find(p => p.id === parentId);
@@ -141,19 +141,32 @@ function displayFamily(title, family) {
     } else {
       alert('No family members found.');
     }
-  }
+}
+
 function findPersonDescendants(person, people) {
-    const {id, firstName, lastName} = person;
     const descendants = [];
-function findDescendantsRecursive(currentPerson) {
+
+    function findDescendantsRecursive(currentPerson) {
     const children = people.filter(child => child.parents.includes(currentPerson.id));
     for (const child of children) {
         descendants.push(child);
         findDescendantsRecursive(child);
     }
-}    
-findDescendantsRecursive(person);
-return descendants;
+    }    
+    if (person){
+    findDescendantsRecursive(person);
+    }
+
+    return descendants;
+}
+
+function displayDescendants(title, descendants) {
+    if (descendants.lenght > 0) {
+        const descendantsInfo = descendants.map(member => `${member.firstName} ${member.lastName}`).join('\n');
+        alert(`${title}:\n\n${descendantsInfo}`);
+    } else {
+        alert('No descendants found.')
+    }
 }
 
 function displayPeople(displayTitle, peopleToDisplay) {
