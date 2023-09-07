@@ -181,25 +181,20 @@ function displayFamily(title, family) {
     }
 }
 
-function findPersonDescendants(person, people) {
+function findDescendantsRecursive(person, people) {
     const descendants = [];
+    const children = people.filter(child => child.parents.includes(person.id));
 
-    function findDescendantsRecursive(currentPerson) {
-    const children = people.filter(child => child.parents.includes(currentPerson.id));
     for (const child of children) {
         descendants.push(child);
-        findDescendantsRecursive(child);
-    }
-    }    
-    if (person){
-    findDescendantsRecursive(person);
+        descendants.push(...findDescendantsRecursive(child, people));
     }
 
     return descendants;
 }
 
 function displayDescendants(title, descendants) {
-    if (descendants.lenght > 0) {
+    if (descendants.length > 0) {
         const descendantsInfo = descendants.map(member => `${member.firstName} ${member.lastName}`).join('\n');
         alert(`${title}:\n\n${descendantsInfo}`);
     } else {
