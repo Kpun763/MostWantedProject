@@ -127,7 +127,7 @@ function mainMenu(person, people) {
             break;
         case "descendants":
             //! TODO
-            let personDescendants = findPersonDescendants(person, people);
+            const personDescendants = findDescendantsRecursive(person, people);
             displayDescendants('Descendants', personDescendants);
             break;
         case "quit":
