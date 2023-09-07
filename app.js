@@ -28,7 +28,7 @@ function searchPeopleDataSet(people) {
 
     const searchTypeChoice = validatedPrompt(
         'Please enter in what type of search you would like to perform.',
-        ['id', 'name', 'traits']
+        ['id', 'name', 'traits', 'multiple traits']
     );
 
     let results = [];
@@ -72,7 +72,42 @@ function searchByTraits(people) {
     const traitFilterResults = people.filter(person => personTraitsMatch(person, traitToSearchFor));
     return traitFilterResults;
     };
-   
+
+function personTraitsMatch(person, trait) {
+    return person.traits.includes(trait);
+}
+function searchByMultipleTraits(people) {
+        const multipleTraitsToSearchFor = []
+        const maxTraits = 5;
+
+        while (multipleTraitsToSearchFor.length < maxTraits) {
+            const trait = validatedPrompt(`Please enter trait #${multipleTraitsToSearchFor.length + 1} or press Enter when done:`, ['']); 
+            if (!trait) {
+                break;
+            }
+            multipleTraitsToSearchFor.push(trait.toLowerCase());
+        }
+    
+        if (multipleTraitsToSearchFor.length === 0) {
+            alert('No traits entered. Returning all people.');
+            return people;
+        }
+    
+        const results = people.filter(person => {
+            return multipleTraitsToSearchFor.every(trait => {
+                if (trait) {
+                    return personTraitsMatch(person, trait);
+                }
+                return true; 
+            });
+        });
+    
+        if (results.length === 0) {
+            alert('No matching people found.');
+        }
+    
+        return results;
+    } 
 function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
